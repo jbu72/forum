@@ -7,13 +7,14 @@ if(isset($_POST['validate'])){
         //les données de l'user
         $user_pseudo = htmlspecialchars($_POST['pseudo']);
         $user_password = htmlspecialchars($_POST['password']);
-        //Vérifier si l'utilsateur existe
+        //Vérifier si l'utilsateur existe(si le pseudo est correcte)
         $checkIfUserExists = $bdd->prepare('SELECT * FROM users WHERE pseudo = ?');
         $checkIfUserExists->execute(array($user_pseudo));
 
         if($checkIfUserExists->rowCount() > 0){
             //Récupérer les données de l'utilisateur
             $usersInfos = $checkIfUserExists->fetch();
+            //Vérifier si le mot de passe est correcte
             if(password_verify($user_password, $usersInfos['mdp'])){
              //authentifier l'utilisateur sur le site et récupérer ses données dans des variables globales sessions
             $_SESSION['auth'] = true;
@@ -21,7 +22,7 @@ if(isset($_POST['validate'])){
             $_SESSION['lastname'] = $usersInfos['nom'];
             $_SESSION['firstname'] = $usersInfos['prenom'];
             $_SESSION['pseudo'] = $usersInfos['mdp'];
-
+            //Rédiriger l'utilsateur vers la page d'accueil
             header('Location: index.php');
 
             }else{
