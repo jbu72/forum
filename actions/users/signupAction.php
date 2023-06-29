@@ -1,6 +1,8 @@
 <?php
-//validation du formulaire
+session_start();
 require('actions/database.php');
+
+//validation du formulaire
 if(isset($_POST['validate'])){
     //vérifier si le user a bien complété tous les champs
     if(!empty($_POST['pseudo']) AND !empty($_POST['lastname']) AND !empty($_POST['firstname']) AND !empty($_POST['password'])){
